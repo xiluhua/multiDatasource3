@@ -1,0 +1,30 @@
+<!-- 由于申明事务使用的注解，所以以下配置没有用到 -->
+<!-- 事务end -->
+<!-- 定义事务传播属性 -->
+<!-- org.springframework.transaction.interceptor.TransactionInterceptor -->
+<tx:advice id="txAdvice" transaction-manager="txManager">
+	<!-- NameMatchTransactionAttributeSource -->
+	<tx:attributes>
+		<!-- 对add、update、delete的方法进行事务 -->
+		<!-- RuleBasedTransactionAttribute -->
+		<tx:method name="add*" 		propagation="REQUIRED" rollback-for="java.lang.Exception" />
+		<tx:method name="delete*" 	propagation="REQUIRED" rollback-for="java.lang.Exception" />
+		<tx:method name="update*" 	propagation="REQUIRED" rollback-for="java.lang.Exception" />
+		<!-- 对剩余的方法进行事务为只读 -->
+		<tx:method name="*" propagation="NOT_SUPPORTED" read-only="true" />
+	</tx:attributes>
+</tx:advice>
+
+
+<!-- 数据源 advice -->
+<aop:config>
+    <!-- AspectJExpressionPointcut -->
+    <aop:pointcut id="transactionPointCut" expression="execution(* com.multi.service.*.*(..))" />
+    <!-- beanName : org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0 -->
+    <!-- className: DefaultBeanFactoryPointcutAdvisor -->
+    <aop:advisor advice-ref="dataSourceAdvice" 	pointcut-ref="transactionPointCut" order="1" />
+      
+	<!-- beanName : org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#1 -->
+    <!-- className: DefaultBeanFactoryPointcutAdvisor 
+    <aop:advisor advice-ref="txAdvice" 			pointcut-ref="transactionPointCut" order="2" />-->
+</aop:config>
