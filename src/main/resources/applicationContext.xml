@@ -107,14 +107,19 @@
          className: AspectJAwareAdvisorAutoProxyCreator
      -->
     <bean id="dataSourceAdvice" class="com.multi.advice.DataSourceAdvice" />
-
+	
     <!-- 数据源 advice -->
     <aop:config>
         <!-- AspectJExpressionPointcut -->
-        <aop:pointcut id="transactionPointCut" expression="execution(* com.multi.service.*.*(..))" />
+        <aop:pointcut id="transactionPointCut" expression="execution(* com.multi.service.impl.*.*(..))" />
+        
         <!-- beanName : org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0 -->
-        <!-- className: DefaultBeanFactoryPointcutAdvisor -->
+        <!-- className: DefaultBeanFactoryPointcutAdvisor-->
         <aop:advisor advice-ref="dataSourceAdvice" 	pointcut-ref="transactionPointCut" order="1" />
     </aop:config>
 
+	<!-- 使用 CGLIB 代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<aop:config proxy-target-class="true" />
+	
 </beans>

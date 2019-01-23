@@ -15,7 +15,7 @@ public class Main1 {
 	public static void main(String[] args)
 	{
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-		// 初始化基础数据
+
 		long a = System.currentTimeMillis();
 		CustomerService service = (CustomerService)ctx.getBean("customerImpl");
 		
